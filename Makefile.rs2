@@ -1,0 +1,16 @@
+CHAINPREFIX=/opt/retrostone2-toolchain
+CROSS_COMPILE=$(CHAINPREFIX)/bin/arm-linux-
+
+CC = $(CROSS_COMPILE)gcc
+CXX = $(CROSS_COMPILE)g++
+SYSROOT     := $(CHAINPREFIX)/arm-buildroot-linux-gnueabihf/sysroot
+SDL_CFLAGS  := $(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
+
+OUTPUTNAME = gambatte-dms-opendingux
+
+DEFINES = -DHAVE_STDINT_H -DVERSION_OPENDINGUX
+INCLUDES = -Isrc/gambatte_sdl -Ilibgambatte -Icommon -Iinclude -Ilibgambatte/include -Ilibgambatte/src $(SDL_CFLAGS)
+OPT_FLAGS  = -Ofast
+EXTRA_LDFLAGS = -lasound -lmikmod -Wl,--as-needed -Wl,--gc-sections -flto
+
+include common.mk
